@@ -3,3 +3,15 @@
 local_settings.py
 db.sqlite3
 /db.sqlite3
+.idea/
+AboutUs/__pycache__/
+AboutUs/migrations/
+Real_Estate/__pycache__/urls.cpython-36.pyc
+Real_Estate/__pycache__/wsgi.cpython-36.pyc
+accounts/__pycache__/
+accounts/migrations/0001_initial.py
+accounts/migrations/0002_auto_20190405_0957.py
+accounts/migrations/0003_auto_20190405_1047.py
+accounts/migrations/__pycache__/
+accounts/templates/accounts/update_profile.html
+media/profile_pics/
