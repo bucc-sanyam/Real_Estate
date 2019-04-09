@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <legend class="border-bottom mb-4">Choose a Property to update</legend>
+    <legend class="border-bottom mb-4">Choose a Property to delete</legend>
     {% for property in object_list %}
         <article class="content-section">
             <div class="media">
@@ -10,7 +10,7 @@
                 <br>
                 <div class="media-body">
                     <a class="account-heading" style="color: #333333"
-                       href="{% url 'update_property_form' property.id %}">{{ property.property_title }}</a>
+                       href="{% url 'delete_property' property.id %}">{{ property.property_title }}</a>
                     <p class="text-secondary">{{ property.property_city }}, {{ property.property_state }}</p>
                     <p class="text-secondary">{{ property.property_price }}</p>
                     <p class="text-secondary">Posted by : {{ property.property_seller_name.username }}</p>
