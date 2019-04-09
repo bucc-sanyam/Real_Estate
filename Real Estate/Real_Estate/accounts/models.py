@@ -8,8 +8,7 @@ class Profile(models.Model):
     description = models.TextField(max_length=500, blank=True)
     phone_number = models.IntegerField(null=False, default=0)
     is_seller = models.BooleanField(null=False, default=False)
-    is_buyer = models.BooleanField(null=False, default=True)
-    image = models.ImageField(default="default.png", upload_to='profile_pics')
+    image = models.ImageField(default="profile_pics/default_profile.png", upload_to='profile_pics')
 
     def __str__(self):
         return self.user.first_name

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% for property in object_list %}
+        <article class="content-section">
+            <div class="media">
+                <img src="{{ property.property_image1.url }}" height="200px"
+                     width="400px">
+                <br>
+                <div class="media-body">
+                    <a class="account-heading" style="color: #333333"
+                       href="{% url 'detailed_view_property' property.id %}">{{ property.property_title }}</a>
+                    <p class="text-secondary">{{ property.property_city }}, {{ property.property_state }}</p>
+                    <p class="text-secondary">{{ property.property_price }}</p>
+                    <p class="text-secondary">Posted by : {{ property.property_seller_name.username }}</p>
+                </div>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

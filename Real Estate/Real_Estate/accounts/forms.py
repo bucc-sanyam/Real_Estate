@@ -13,7 +13,7 @@ class UserForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('phone_number', 'description', 'is_seller', 'is_buyer', 'image')
+        fields = ('phone_number', 'description', 'is_seller', 'image')
 
 
 class UserUpdateForm(forms.ModelForm):

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Property Details</legend>
+            <div class="media-body">
+                <img src="{{ object.property_image1.url }}" height="200px" width="400px"><br>
+                <p class="account-heading">Property Name : {{ object.property_title }}<br></p>
+                <p class="text-secondary">{{ object.property_address }}<br></p>
+                <p class="text-secondary">{{ object.property_city }}<br></p>
+                <p class="text-secondary">{{ object.property_state }}<br></p>
+                <p class="text-secondary">{{ object.property_pin }}<br></p>
+                <p class="text-secondary">{{ object.property_price }}<br></p>
+                <p class="text-secondary">{{ object.property_bedroom }}<br></p>
+                <p class="text-secondary">{{ object.property_bathroom }}<br></p>
+                <p class="text-secondary">{{ object.property_sq_feet }}<br></p>
+                <p class="text-secondary">{{ object.property_lot_size }}<br></p>
+                <p class="text-secondary">{{ object.property_garage }}<br></p>
+                <p class="text-secondary">{{ object.property_description }}<br></p>
+            </div>
+        </fieldset>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ messages.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+
+

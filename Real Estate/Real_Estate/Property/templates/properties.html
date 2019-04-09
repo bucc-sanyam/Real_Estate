@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <fieldset class="form-group">
+            {% if message %}
+                <legend class="border-bottom mb-4">{{ header }}</legend>
+            {% endif %}
+            {% if form %}
+                <legend class="border-bottom mb-4">Add a Property</legend>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="form-group">
+                        <button class="btn bt-outline-info" type="submit">Add!</button>
+                    </div>
+                </form>
+            {% endif %}
+        </fieldset>
+        {% if message %}
+            <div class="alert alert-{{ messages.tags }}">
+                {{ message }}
+            </div>
+
+        {% endif %}
+    </div>
+{% endblock %}
