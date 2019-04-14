@@ -13,5 +13,5 @@ accounts/migrations/0001_initial.py
 accounts/migrations/0002_auto_20190405_0957.py
 accounts/migrations/0003_auto_20190405_1047.py
 accounts/migrations/__pycache__/
-accounts/templates/accounts/update_profile.html
 media/profile_pics/
+

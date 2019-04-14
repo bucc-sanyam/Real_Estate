@@ -3,5 +3,5 @@ from accounts.views import registerUser
 
 
 urlpatterns = [
-    path('register/', registerUser, name='register'),
+    path('', registerUser, name='register'),
 ]

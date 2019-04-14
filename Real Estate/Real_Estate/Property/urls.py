@@ -9,4 +9,6 @@ urlpatterns = [
     path('details/<int:pk>', ViewSpecificProperty.as_view(), name='detailed_view_property'),
     path('delete/<int:pk>', DeleteProperty.as_view(), name='delete_property'),
     path('delete/', DeletePropertyList.as_view(), name='delete_property_list'),
+    path('access/', access),
+    path('query/<int:id>', handlequery, name="handle_query")
 ]

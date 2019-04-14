@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -8,7 +9,7 @@ from django.views import View
 from django.views.generic import FormView, DetailView, UpdateView, ListView, DeleteView
 from django.contrib.auth.models import User
 from .forms import PropertyForm
-from .models import Properties
+from .models import Properties, Enquiry
 
 
 class RegisterProperty(LoginRequiredMixin, FormView):
@@ -37,14 +38,19 @@ class RegisterProperty(LoginRequiredMixin, FormView):
 class UpdateProperty(LoginRequiredMixin, ListView):
     model = Properties
     template_name = 'update_property.html'
+    ordering = ['-property_listing_date']
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateProperty, self).get_context_data(**kwargs)
+        properties = Properties.objects.filter(property_seller_name_id=self.request.user.id).order_by(
+            '-property_listing_date')
+        context['properties'] = properties
+        return context
 
 
 class UpdatePropertyForm(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Properties
-    fields = ['property_title', 'property_address', 'property_city', 'property_state', 'property_pin',
-              'property_price', 'property_bedroom', 'property_bathroom', 'property_sq_feet', 'property_lot_size',
-              'property_garage', 'property_description', 'property_image1', 'property_image2', 'property_image3',
-              'property_image4', 'property_image5']
+    form_class = PropertyForm
     template_name = 'update_property_form.html'
     success_url = reverse_lazy('list_all_property')
 
@@ -54,20 +60,43 @@ class UpdatePropertyForm(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+    def handle_no_permission(self):
+        return render(self.request, 'access_denied.html')
+
 
 class ViewAllProperty(ListView):
     model = Properties
     template_name = 'property_list.html'
+    paginate_by = 3
+    ordering = ['-property_listing_date']
 
 
 class ViewSpecificProperty(DetailView):
     model = Properties
     template_name = 'property_details.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ViewSpecificProperty, self).get_context_data(**kwargs)
+        enquiries = Enquiry.objects.filter(property=kwargs['object'].id)
+        context['enquiries'] = enquiries
+        for enquiry in enquiries:
+            if self.request.user.id == enquiry.enquiry_user.id:
+                context['enquiry_made'] = True
+                break
+        return context
+
 
 class DeletePropertyList(LoginRequiredMixin, ListView):
     model = Properties
     template_name = 'delete_property_list.html'
+    ordering = ['-property_listing_date']
+
+    def get_context_data(self, **kwargs):
+        context = super(DeletePropertyList, self).get_context_data(**kwargs)
+        properties = Properties.objects.filter(property_seller_name_id=self.request.user.id).order_by(
+            '-property_listing_date')
+        context['properties'] = properties
+        return context
 
 
 class DeleteProperty(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -81,14 +110,64 @@ class DeleteProperty(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+    def handle_no_permission(self):
+        return render(self.request, 'access_denied.html')
 
-def search_property(request):
+
+def access(request):
+    return render(request, "access_denied.html")
+
+
+def handlequery(request, id):
+    new_enquiry = Enquiry()
+    new_enquiry.enquiry_user = User.objects.get(id=request.user.id)
+    name = new_enquiry.property = Properties.objects.get(id=id)
+    description = new_enquiry.description = request.POST['description']
+    new_enquiry.save()
+    # send_mail(
+    #     'Enquiry for '+name.property_title,
+    #     'Enquiry by '+request.user.first_name+' '+request.user.last_name+
+    #     '\nEnquiry : '+description,
+    #     request.user.email,
+    #     [name.property_seller_name.email],
+    #     fail_silently=False,
+    # )
+    return redirect("list_all_property")
+
+
+def home(request):
+    data = dict()
     if request.method == 'POST':
-        property_to_search = request.POST.get('search')
-        try:
-            status = Properties.objects.filter(property_title__contains=property_to_search)
-            if not status:
-                raise Exception
-            return render(request, 'search.html', {'property': status})
-        except Exception:
-            return render(request, 'search.html', {'errors': 'Property Not Found !'})
+        invalid_entries = [' ', '', ""]
+        if request.POST.get('select-city') is None or 'All Cities':
+            city_search_results = Properties.objects.all()
+        else:
+            city_search_results = Properties.objects.filter(property_city=request.POST.get('select_city', ""))
+        if request.POST.get('select-state') is None or 'All States':
+            state_search_results = Properties.objects.all()
+        else:
+            state_search_results = Properties.objects.filter(property_states=request.POST.get('select_state', ""))
+        query_result = city_search_results
+        query_result = query_result.union(state_search_results)
+        print(query_result)
+        if request.POST.get('property-name') not in invalid_entries:
+            text_search_results = Properties.objects.filter(
+                property_title__icontains=request.POST.get('property-name')).filter(
+                property_description__icontains=request.POST.get('property-name'))
+            query_result = query_result.intersection(text_search_results)
+        print(query_result)
+        data['object_list'] = query_result
+        data['search'] = 'Search Results'
+        return render(request, 'property_list.html', data)
+    else:
+        form = PropertyForm
+        properties = []
+        i = 0
+        property_list = Properties.objects.filter().order_by('-property_listing_date')
+        for property in property_list:
+            if i < 3:
+                properties.append(property)
+            i = i + 1
+        data['properties'] = properties
+        data['form'] = form
+        return render(request, "home.html", data)

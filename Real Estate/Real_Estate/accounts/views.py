@@ -1,7 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction
 from django.shortcuts import render, redirect
+
+from Property.models import Enquiry, Properties
 from .forms import *
 from .models import Profile, User
 
@@ -12,7 +15,7 @@ def registerUser(request):
         profile_form = ProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
-            profile_form_user=profile_form.save(commit=False)
+            profile_form_user = profile_form.save(commit=False)
             profile_form_user.user = user
             profile_form_user.save()
             name = user_form.cleaned_data.get('first_name')
@@ -26,10 +29,27 @@ def registerUser(request):
 
 @login_required
 def profile(request):
+    data = dict()
     if request.method == 'POST':
         return redirect(update_profile)
     else:
-        return render(request, 'accounts/profile.html')
+        if request.user.profile.is_seller:
+            properties = Properties.objects.filter(property_seller_name_id=request.user.id).order_by(
+                '-property_listing_date')
+            data['properties'] = properties
+            page = request.GET.get('page', 1)
+            paginator = Paginator(properties, 3)
+            try:
+                users = paginator.page(page)
+            except PageNotAnInteger:
+                users = paginator.page(1)
+            except EmptyPage:
+                users = paginator.page(paginator.num_pages)
+            data['users'] = users
+        else:
+            enquiries = Enquiry.objects.filter(enquiry_user_id=request.user.id).order_by('-date')
+            data['enquiries'] = enquiries
+        return render(request, 'accounts/profile.html', data)
 
 
 @login_required

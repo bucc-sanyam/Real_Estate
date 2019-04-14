@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from accounts.models import Profile
+
 
 class Properties(models.Model):
     property_seller_name = models.ForeignKey(User, on_delete=models.CASCADE)
-    property_title = models.CharField(max_length=100, blank=False)
+    property_title = models.CharField(max_length=100, blank=False, unique=True)
     property_address = models.CharField(max_length=100, blank=False)
     property_city_choices = (
         ('Ghaziabad', 'Ghaziabad'),
@@ -40,3 +42,13 @@ class Properties(models.Model):
 
     def __str__(self):
         return self.property_seller_name.first_name
+
+
+class Enquiry(models.Model):
+    enquiry_user = models.ForeignKey(User, on_delete=models.CASCADE, default='')
+    property = models.ForeignKey(Properties, on_delete=models.CASCADE, default='')
+    description = models.TextField(max_length=200, blank=False)
+    date = models.DateTimeField(auto_now_add=True, editable=False)
+
+    def __str__(self):
+        return self.enquiry_user.email
