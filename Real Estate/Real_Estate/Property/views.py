@@ -71,6 +71,19 @@ class ViewAllProperty(ListView):
     ordering = ['-property_listing_date']
 
 
+class MyPropertyList(ListView):
+    model = Properties
+    template_name = 'my_property_list.html'
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPropertyList, self).get_context_data(**kwargs)
+        properties = Properties.objects.filter(property_seller_name_id=self.request.user.id).order_by(
+            '-property_listing_date')
+        context['properties'] = properties
+        return context
+
+
 class ViewSpecificProperty(DetailView):
     model = Properties
     template_name = 'property_details.html'
@@ -126,7 +139,7 @@ def handlequery(request, id):
     new_enquiry.save()
     send_mail(
         'Enquiry for ' + name.property_title,
-        'Enquiry by ' + request.user.first_name + ' ' + request.user.last_name +
+        'Enquiry by : ' + request.user.first_name + ' ' + request.user.last_name +
         '\nEnquiry : ' + description,
         request.user.email,
         [name.property_seller_name.email],

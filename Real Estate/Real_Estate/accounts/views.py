@@ -40,12 +40,12 @@ def profile(request):
             page = request.GET.get('page', 1)
             paginator = Paginator(properties, 2)
             try:
-                users = paginator.page(page)
+                paginator_pages = paginator.page(page)
             except PageNotAnInteger:
-                users = paginator.page(1)
+                paginator_pages = paginator.page(1)
             except EmptyPage:
-                users = paginator.page(paginator.num_pages)
-            data['users'] = users
+                paginator_pages = paginator.page(paginator.num_pages)
+            data['users'] = paginator_pages
         else:
             enquiries = Enquiry.objects.filter(enquiry_user_id=request.user.id).order_by('-date')
             data['enquiries'] = enquiries

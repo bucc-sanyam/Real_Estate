@@ -33,7 +33,13 @@
                     <p>
                     <form method="POST">
                         {% csrf_token %}
-                        <button class="btn btn-outline-primary rounded-0 py-2 px-5" type="submit">Update Profile
+                        <button class="btn btn-outline-dark rounded-0 py-2 px-5" type="submit">Update Profile
+                        </button>
+                    </form>
+                    <br>
+                    <form action="{% url 'register_property' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-outline-dark rounded-0 py-2 px-5" type="submit">Register Property
                         </button>
                     </form>
                     </p>
@@ -53,10 +59,11 @@
                     <div class="row mb-5 justify-content-center">
                         <div class="col-md-7">
                             <div class="site-section-title text-center">
-                                <h2>Enquiries</h2>
+                                <h2>My Enquiries</h2>
                                 <p>Here are the enquiries made by you.</p>
                             </div>
                         </div>
+                        Create
                     </div>
                     <div class="row">
                         <table class="table table-hover table-fixed">
