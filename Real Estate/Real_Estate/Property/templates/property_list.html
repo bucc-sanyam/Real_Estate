@@ -1,5 +1,6 @@
 {% extends 'accounts/base.html' %}
 {% load static %}
+{% load humanize %}
 {% block content %}
     <div class="site-blocks-cover inner-page-cover overlay"
          style="background-image: url('{% static "images/hero_bg_2.jpg" %}');" data-aos="fade"
@@ -35,7 +36,7 @@
                                 </h2>
                                 <span class="property-location d-block mb-3"><span
                                         class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
-                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price }}</strong>
+                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | intcomma }}</strong>
                                 <p>{{ property.property_description }} </p>
                                 <ul class="property-specs-wrap mb-3 mb-lg-0">
                                     <li>
