@@ -131,3 +131,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'profile'
 LOGIN_URL = 'login'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'buccaneergupta@gmail.com'
+EMAIL_HOST_PASSWORD = 'realestate1234'
+EMAIL_USE_TLS = True

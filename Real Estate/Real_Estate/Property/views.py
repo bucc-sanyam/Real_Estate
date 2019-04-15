@@ -124,14 +124,14 @@ def handlequery(request, id):
     name = new_enquiry.property = Properties.objects.get(id=id)
     description = new_enquiry.description = request.POST['description']
     new_enquiry.save()
-    # send_mail(
-    #     'Enquiry for '+name.property_title,
-    #     'Enquiry by '+request.user.first_name+' '+request.user.last_name+
-    #     '\nEnquiry : '+description,
-    #     request.user.email,
-    #     [name.property_seller_name.email],
-    #     fail_silently=False,
-    # )
+    send_mail(
+        'Enquiry for ' + name.property_title,
+        'Enquiry by ' + request.user.first_name + ' ' + request.user.last_name +
+        '\nEnquiry : ' + description,
+        request.user.email,
+        [name.property_seller_name.email],
+        fail_silently=False,
+    )
     return redirect("list_all_property")
 
 
@@ -149,13 +149,11 @@ def home(request):
             state_search_results = Properties.objects.filter(property_states=request.POST.get('select_state', ""))
         query_result = city_search_results
         query_result = query_result.union(state_search_results)
-        print(query_result)
         if request.POST.get('property-name') not in invalid_entries:
+            print('here')
             text_search_results = Properties.objects.filter(
-                property_title__icontains=request.POST.get('property-name')).filter(
-                property_description__icontains=request.POST.get('property-name'))
+                property_title__icontains=request.POST.get('property-name'))
             query_result = query_result.intersection(text_search_results)
-        print(query_result)
         data['object_list'] = query_result
         data['search'] = 'Search Results'
         return render(request, 'property_list.html', data)

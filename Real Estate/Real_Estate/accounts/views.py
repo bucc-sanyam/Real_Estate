@@ -38,7 +38,7 @@ def profile(request):
                 '-property_listing_date')
             data['properties'] = properties
             page = request.GET.get('page', 1)
-            paginator = Paginator(properties, 3)
+            paginator = Paginator(properties, 2)
             try:
                 users = paginator.page(page)
             except PageNotAnInteger:
