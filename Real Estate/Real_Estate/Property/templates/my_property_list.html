@@ -39,12 +39,24 @@
                                         <span class="property-specs-number">{{ property.property_bedroom }}</span>
                                     </li>
                                     <li>
+                                        <span class="property-specs">Baths</span>
+                                        <span class="property-specs-number">{{ property.property_bathroom }}</span>
+                                    </li>
+                                    <li>
                                         <span class="property-specs">SQ FT</span>
                                         <span class="property-specs-number">{{ property.property_sq_feet }}</span>
                                     </li>
-                                    <li>
-                                        <span class="property-specs">Posted by :</span>
-                                        <span class="property-specs-number">{{ property.property_seller_name.username }}</span>
+                                    <li class="float-lg-right">
+                                        <form action="{% url 'delete_property' property.id %}">
+                                            <input type="submit" class="btn btn-outline-danger"
+                                                   value="Delete">
+                                        </form>
+                                    </li>
+                                    <li class="float-lg-right">
+                                        <form action="{% url 'update_property_form' property.id %}">
+                                            <input type="submit" class="btn btn-outline-info"
+                                                   value="Update">
+                                        </form>
                                     </li>
                                 </ul>
                             </div>

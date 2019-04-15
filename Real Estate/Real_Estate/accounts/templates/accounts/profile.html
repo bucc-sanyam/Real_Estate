@@ -1,4 +1,5 @@
 {% extends 'accounts/base.html' %}
+{% load humanize %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -63,7 +64,6 @@
                                 <p>Here are the enquiries made by you.</p>
                             </div>
                         </div>
-                        Create
                     </div>
                     <div class="row">
                         <table class="table table-hover table-fixed">
@@ -117,7 +117,7 @@
                                                     </h2>
                                                     <span class="property-location d-block mb-3"><span
                                                             class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
-                                                    <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price }}</strong>
+                                                    <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | intcomma }}</strong>
                                                     <p>{{ property.property_description }} </p>
                                                     <ul class="property-specs-wrap mb-3 mb-lg-0">
                                                         <li>

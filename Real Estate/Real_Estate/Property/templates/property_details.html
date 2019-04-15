@@ -130,15 +130,51 @@
                             <div class="col-lg-4">
                                 <div class="bg-white widget border rounded">
                                     <h3 class="h4 text-black widget-title mb-3">Make Enquiry</h3>
-                                    <div class="form-group">
-                                        <label>Register wih a buyer account to make enquiry.</label>
-                                        <div class="row">
-                                            <form action="{% url 'login' %}" class="col-lg-4">
-                                                <input type="submit" class="btn btn-outline-primary" value="Login">
-                                            </form>
-                                            <form action="{% url 'register' %}">
-                                                <input type="submit" class="btn btn-outline-dark" value="Register">
-                                            </form>
+                                    <div class="container">
+                                        <button type="button" class="btn btn-outline-dark btn-lg"
+                                                style="margin-left : 30%" data-toggle="modal"
+                                                data-target="#myModal">Enquiry
+                                        </button>
+                                        <div class="modal fade" id="myModal" role="dialog">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Enquiry</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>Register wih a buyer account to make enquiry.</label>
+                                                            <div class="row">
+                                                                <ul class="property-specs-wrap mb-10 mb-lg-0"
+                                                                    style="padding-left: 20px">
+                                                                    <li>
+                                                                        <form action="{% url 'login' %}">
+                                                                            <input type="submit"
+                                                                                   class="btn btn-outline-primary"
+                                                                                   value="Login">
+                                                                        </form>
+                                                                    </li>
+                                                                    <li>
+                                                                        <form action="{% url 'register' %}">
+                                                                            <input type="submit"
+                                                                                   class="btn btn-outline-dark"
+                                                                                   value="Register">
+                                                                        </form>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default"
+                                                                data-dismiss="modal">
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -149,8 +185,56 @@
                                     {% if enquiry_made %}
                                         <div class="bg-white widget border rounded">
                                             <h3 class="h4 text-black widget-title mb-3">You have already made an
-                                                enquiry on this
-                                                property.</h3>
+                                                enquiry on this property.</h3>
+                                            <div class="container">
+                                                <button type="button" class="btn btn-outline-dark btn-lg"
+                                                        style="margin-left : 20%"
+                                                        data-toggle="modal"
+                                                        data-target="#myModal">Enquiry Made
+                                                </button>
+                                                <div class="modal fade" id="myModal" role="dialog">
+                                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">Enquiry Made</h4>
+                                                                <button type="button" class="close"
+                                                                        data-dismiss="modal">&times;
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <table class="table table-hover table-fixed">
+                                                                        <thead>
+                                                                        <tr>
+                                                                            <th>Property Name</th>
+                                                                            <th>Location</th>
+                                                                            <th>Date Enquired</th>
+                                                                            <th>Enquiry</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        {% for enquiry in enquiries %}
+                                                                            <tr>
+                                                                                <th>{{ enquiry.property.property_title }}</th>
+                                                                                <td>{{ enquiry.property.property_city }}, {{ enquiry.property.property_state }}</td>
+                                                                                <td>{{ enquiry.date }}</td>
+                                                                                <td>{{ enquiry.description }}</td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-default"
+                                                                        data-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     {% endif %}
                                     <div class="bg-white widget border rounded">
@@ -177,12 +261,43 @@
                     <div class="col-lg-4">
                         <div class="bg-white widget border rounded">
                             <h3 class="h4 text-black widget-title mb-3">Make Enquiry</h3>
-                            <form action="{% url 'login' %}">
-                                <div class="form-group">
-                                    <label>Please login to make an enquiry.</label>
-                                    <input type="submit" id="phone" class="btn btn-outline-primary" value="Login">
+                            <div class="container">
+                                <button type="button" class="btn btn-outline-dark btn-lg" data-toggle="modal"
+                                        style="margin-left : 30%"
+                                        data-target="#myModal">Enquiry
+                                </button>
+                                <div class="modal fade" id="myModal" role="dialog">
+                                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Enquiry</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{% url 'login' %}">
+                                                    <div class="form-group">
+                                                        <label>Please login to make an enquiry.</label>
+                                                        <ul class="property-specs-wrap mb-10 mb-lg-0"
+                                                            style="padding-left: 20px">
+                                                            <li>
+                                                                <input type="submit" id="phone"
+                                                                       class="btn btn-outline-primary"
+                                                                       value="Login">
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 {% endif %}

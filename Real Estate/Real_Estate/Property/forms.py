@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from .models import Properties
 
@@ -28,3 +30,15 @@ class PropertyForm(forms.ModelForm):
             'property_image4': 'Image 4',
             'property_image5': 'Image 5'
         }
+
+    def clean(self):
+        cd = self.cleaned_data
+
+        patter_number = re.compile("^[\d]{6}$")
+        price = re.compile("^[\d]{4,}$")
+
+        if not re.match(patter_number, str(cd.get("property_pin"))):
+            self.add_error('property_pin', "The pin code must be a 6 digit number")
+
+        if not re.match(price, str(cd.get("property_price"))):
+            self.add_error('property_price', "The price must be at least above 1000")
