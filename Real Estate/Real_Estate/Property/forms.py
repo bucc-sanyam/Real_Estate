@@ -35,10 +35,10 @@ class PropertyForm(forms.ModelForm):
         cd = self.cleaned_data
 
         patter_number = re.compile("^[\d]{6}$")
-        price = re.compile("^[\d]{4,}$")
+        price = re.compile("^[\d]{6,}$")
 
         if not re.match(patter_number, str(cd.get("property_pin"))):
             self.add_error('property_pin', "The pin code must be a 6 digit number")
 
         if not re.match(price, str(cd.get("property_price"))):
-            self.add_error('property_price', "The price must be at least above 1000")
+            self.add_error('property_price', "The price must be at least above 100000")
