@@ -1,5 +1,5 @@
 {% extends 'accounts/base.html' %}
-{% load humanize %}
+{% load tags %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -33,7 +33,7 @@
                                 </h2>
                                 <span class="property-location d-block mb-3"><span
                                         class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
-                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | intcomma }}</strong>
+                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | currency_in_indian_format }}</strong>
                                 <ul class="property-specs-wrap mb-3 mb-lg-0">
                                     <li>
                                         <span class="property-specs">Posted By :</span>

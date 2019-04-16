@@ -1,5 +1,5 @@
 {% extends 'accounts/base.html' %}
-{% load humanize %}
+{% load tags %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
@@ -30,7 +30,7 @@
                     <div class="bg-white property-body border-bottom border-left border-right">
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <strong class="text-success h1 mb-3">₹{{ object.property_price | intcomma }}</strong>
+                                <strong class="text-success h1 mb-3">₹{{ object.property_price | currency_in_indian_format }}</strong>
                             </div>
                             <div class="col-md-6">
                                 <ul class="property-specs-wrap mb-3 mb-lg-0  float-lg-right">

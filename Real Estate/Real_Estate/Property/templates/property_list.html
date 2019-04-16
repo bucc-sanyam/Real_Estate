@@ -1,6 +1,6 @@
 {% extends 'accounts/base.html' %}
 {% load static %}
-{% load humanize %}
+{% load tags %}
 {% block content %}
     <div class="site-blocks-cover inner-page-cover overlay"
          style="background-image: url('{% static "images/header2.jpg" %}');" data-aos="fade"
@@ -36,8 +36,8 @@
                                 </h2>
                                 <span class="property-location d-block mb-3"><span
                                         class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
-                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | intcomma }}</strong>
-                                <p>{{ property.property_description }} </p>
+                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | currency_in_indian_format }}</strong>
+                                <p>{{ property.property_description }}
                                 <ul class="property-specs-wrap mb-3 mb-lg-0">
                                     <li>
                                         <span class="property-specs">Beds</span>
