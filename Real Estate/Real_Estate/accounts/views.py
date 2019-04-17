@@ -17,6 +17,7 @@ def registerUser(request):
             user = user_form.save()
             profile_form_user = profile_form.save(commit=False)
             profile_form_user.user = user
+            profile_form.instance.image = request.FILES['image']
             profile_form_user.save()
             name = user_form.cleaned_data.get('first_name')
             messages.success(request, f"Hey {name}! Your account has been created. You can now login!")
@@ -45,7 +46,7 @@ def profile(request):
                 paginator_pages = paginator.page(1)
             except EmptyPage:
                 paginator_pages = paginator.page(paginator.num_pages)
-            data['users'] = paginator_pages
+            data['properties'] = paginator_pages
         else:
             enquiries = Enquiry.objects.filter(enquiry_user_id=request.user.id).order_by('-date')
             data['enquiries'] = enquiries

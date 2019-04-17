@@ -113,6 +113,31 @@
                                             <label><b>Description : </b>{{ enquiry.description }}</label>
                                         </div>
                                     {% endfor %}
+                                    {% if enquiries.has_other_pages %}
+                                        <div class="row mt-5">
+                                            <div class="col-md-12 text-center">
+                                                <div class="site-pagination">
+                                                    {% if enquiries.has_previous %}
+                                                        <a href="?page={{ enquiries.previous_page_number }}">&laquo;</a>
+                                                    {% else %}
+                                                        <a class="disabled">&laquo;</a>
+                                                    {% endif %}
+                                                    {% for i in enquiries.paginator.page_range %}
+                                                        {% if enquiries.number == i %}
+                                                            <a class="active">{{ i }} </a>
+                                                        {% else %}
+                                                            <a href="?page={{ i }}">{{ i }}</a>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    {% if enquiries.has_next %}
+                                                        <a href="?page={{ enquiries.next_page_number }}">&raquo;</a>
+                                                    {% else %}
+                                                        <a class="disabled">&raquo;</a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         {% else %}
@@ -214,7 +239,7 @@
                                                                         </tr>
                                                                         </thead>
                                                                         <tbody>
-                                                                        {% for enquiry in enquiries %}
+                                                                        {% for enquiry in buyer_enquiries %}
                                                                             <tr>
                                                                                 <th>{{ enquiry.property.property_title }}</th>
                                                                                 <td>{{ enquiry.property.property_city }}, {{ enquiry.property.property_state }}</td>

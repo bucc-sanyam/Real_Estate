@@ -16,82 +16,90 @@
 
     <div class="site-section site-section-sm bg-light">
         <div class="container">
-            <div class="row mb-4">
-                {% for property in properties %}
-                    <div class="col-md-12">
-                        <div class="property-entry horizontal d-lg-flex">
-                            <a href="{% url 'detailed_view_property' property.id %}" class="property-thumbnail h-100">
-                                <div class="offer-type-wrap">
-                                    <span class="offer-type bg-success">Sale</span>
+            <div class="row justify-content-center">
+                {% if properties %}
+                    {% for property in properties %}
+                        <div class="col-md-12">
+                            <div class="property-entry horizontal d-lg-flex">
+                                <a href="{% url 'detailed_view_property' property.id %}"
+                                   class="property-thumbnail h-100">
+                                    <div class="offer-type-wrap">
+                                        <span class="offer-type bg-success">Sale</span>
+                                    </div>
+                                    <img src="{{ property.property_image1.url }}" alt="Image" class="img-fluid">
+                                </a>
+                                <div class="p-4 property-body">
+                                    <h2 class="property-title"><a
+                                            href="{% url 'detailed_view_property' property.id %}">{{ property.property_title }}</a>
+                                    </h2>
+                                    <span class="property-location d-block mb-3"><span
+                                            class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
+                                    <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | currency_in_indian_format }}</strong>
+                                    <p>{{ property.property_description }} </p>
+                                    <ul class="property-specs-wrap mb-3 mb-lg-0">
+                                        <li>
+                                            <span class="property-specs">Beds</span>
+                                            <span class="property-specs-number">{{ property.property_bedroom }}</span>
+                                        </li>
+                                        <li>
+                                            <span class="property-specs">Baths</span>
+                                            <span class="property-specs-number">{{ property.property_bathroom }}</span>
+                                        </li>
+                                        <li>
+                                            <span class="property-specs">SQ FT</span>
+                                            <span class="property-specs-number">{{ property.property_sq_feet }}</span>
+                                        </li>
+                                        <li class="float-lg-right">
+                                            <form action="{% url 'delete_property' property.id %}">
+                                                <input type="submit" class="btn btn-outline-danger"
+                                                       value="Delete">
+                                            </form>
+                                        </li>
+                                        <li class="float-lg-right">
+                                            <form action="{% url 'update_property_form' property.id %}">
+                                                <input type="submit" class="btn btn-outline-info"
+                                                       value="Update">
+                                            </form>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <img src="{{ property.property_image1.url }}" alt="Image" class="img-fluid">
-                            </a>
-                            <div class="p-4 property-body">
-                                <h2 class="property-title"><a
-                                        href="{% url 'detailed_view_property' property.id %}">{{ property.property_title }}</a>
-                                </h2>
-                                <span class="property-location d-block mb-3"><span
-                                        class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
-                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | currency_in_indian_format }}</strong>
-                                <p>{{ property.property_description }} </p>
-                                <ul class="property-specs-wrap mb-3 mb-lg-0">
-                                    <li>
-                                        <span class="property-specs">Beds</span>
-                                        <span class="property-specs-number">{{ property.property_bedroom }}</span>
-                                    </li>
-                                    <li>
-                                        <span class="property-specs">Baths</span>
-                                        <span class="property-specs-number">{{ property.property_bathroom }}</span>
-                                    </li>
-                                    <li>
-                                        <span class="property-specs">SQ FT</span>
-                                        <span class="property-specs-number">{{ property.property_sq_feet }}</span>
-                                    </li>
-                                    <li class="float-lg-right">
-                                        <form action="{% url 'delete_property' property.id %}">
-                                            <input type="submit" class="btn btn-outline-danger"
-                                                   value="Delete">
-                                        </form>
-                                    </li>
-                                    <li class="float-lg-right">
-                                        <form action="{% url 'update_property_form' property.id %}">
-                                            <input type="submit" class="btn btn-outline-info"
-                                                   value="Update">
-                                        </form>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
-            </div>
-
-            {% if is_paginated %}
-                <div class="row mt-5">
-                    <div class="col-md-12 text-center">
-                        <div class="site-pagination">
-                            {% if page_obj.has_previous %}
-                                <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-                            {% else %}
-                                <a class="disabled">&laquo;</a>
-                            {% endif %}
-                            {% for i in page_obj.paginator.page_range %}
-                                {% if page_obj.number == i %}
-                                    <a class="active">{{ i }} </a>
-                                {% else %}
-                                    <a href="?page={{ i }}">{{ i }}</a>
-                                {% endif %}
-                            {% endfor %}
-                            {% if page_obj.has_next %}
-                                <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-                            {% else %}
-                                <a class="disabled">&raquo;</a>
-                            {% endif %}
+                    {% endfor %}
+                    {% if is_paginated %}
+                        <div class="row mt-5">
+                            <div class="col-md-12 text-center">
+                                <div class="site-pagination">
+                                    {% if page_obj.has_previous %}
+                                        <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+                                    {% else %}
+                                        <a class="disabled">&laquo;</a>
+                                    {% endif %}
+                                    {% for i in page_obj.paginator.page_range %}
+                                        {% if page_obj.number == i %}
+                                            <a class="active">{{ i }} </a>
+                                        {% else %}
+                                            <a href="?page={{ i }}">{{ i }}</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if page_obj.has_next %}
+                                        <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                                    {% else %}
+                                        <a class="disabled">&raquo;</a>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col-md-7 text-center">
+                        <div class="site-section-title">
+                            <h2>No properties posted yet.</h2>
+                        </div>
+                        <p>Please register some properties from your account in order to view them here.</p>
                     </div>
-                </div>
-            {% endif %}
-
-        </div>
+                    </div>
+                {% endif %}
     </div>
 {% endblock %}

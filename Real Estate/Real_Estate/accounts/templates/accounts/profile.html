@@ -151,24 +151,24 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            {% if users.has_other_pages %}
+                            {% if properties.has_other_pages %}
                                 <div class="row mt-5">
                                     <div class="col-md-12 text-center">
                                         <div class="site-pagination">
-                                            {% if users.has_previous %}
-                                                <a href="?page={{ users.previous_page_number }}">&laquo;</a>
+                                            {% if properties.has_previous %}
+                                                <a href="?page={{ properties.previous_page_number }}">&laquo;</a>
                                             {% else %}
                                                 <a class="disabled">&laquo;</a>
                                             {% endif %}
-                                            {% for i in users.paginator.page_range %}
-                                                {% if users.number == i %}
+                                            {% for i in properties.paginator.page_range %}
+                                                {% if properties.number == i %}
                                                     <a class="active">{{ i }} </a>
                                                 {% else %}
                                                     <a href="?page={{ i }}">{{ i }}</a>
                                                 {% endif %}
                                             {% endfor %}
-                                            {% if users.has_next %}
-                                                <a href="?page={{ users.next_page_number }}">&raquo;</a>
+                                            {% if properties.has_next %}
+                                                <a href="?page={{ properties.next_page_number }}">&raquo;</a>
                                             {% else %}
                                                 <a class="disabled">&raquo;</a>
                                             {% endif %}

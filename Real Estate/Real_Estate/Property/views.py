@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.mail import send_mail
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
@@ -90,12 +91,22 @@ class ViewSpecificProperty(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ViewSpecificProperty, self).get_context_data(**kwargs)
-        enquiries = Enquiry.objects.filter(property=kwargs['object'].id)
+        enquiries = Enquiry.objects.filter(property=kwargs['object'].id).order_by('-date')
         context['enquiries'] = enquiries
+        context['buyer_enquiries'] = []
         for enquiry in enquiries:
             if self.request.user.id == enquiry.enquiry_user.id:
+                context['buyer_enquiries'].append(enquiry)
                 context['enquiry_made'] = True
-                break
+        page = self.request.GET.get('page', 1)
+        paginator = Paginator(enquiries, 4)
+        try:
+            paginator_pages = paginator.page(page)
+        except PageNotAnInteger:
+            paginator_pages = paginator.page(1)
+        except EmptyPage:
+            paginator_pages = paginator.page(paginator.num_pages)
+        context['enquiries'] = paginator_pages
         return context
 
 
