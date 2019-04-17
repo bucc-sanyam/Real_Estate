@@ -20,42 +20,52 @@
 
     <div class="site-section site-section-sm bg-light">
         <div class="container">
-            <div class="row mb-4">
-                {% for property in object_list %}
-                    <div class="col-md-12">
-                        <div class="property-entry horizontal d-lg-flex">
-                            <a href="{% url 'detailed_view_property' property.id %}" class="property-thumbnail h-100">
-                                <div class="offer-type-wrap">
-                                    <span class="offer-type bg-success">Sale</span>
-                                </div>
-                                <img src="{{ property.property_image1.url }}" alt="Image" class="img-fluid">
-                            </a>
-                            <div class="p-4 property-body">
-                                <h2 class="property-title"><a
-                                        href="{% url 'detailed_view_property' property.id %}">{{ property.property_title }}</a>
-                                </h2>
-                                <span class="property-location d-block mb-3"><span
-                                        class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
-                                <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | currency_in_indian_format }}</strong>
-                                <p>{{ property.property_description }}
-                                <ul class="property-specs-wrap mb-3 mb-lg-0">
-                                    <li>
-                                        <span class="property-specs">Beds</span>
-                                        <span class="property-specs-number">{{ property.property_bedroom }}</span>
-                                    </li>
-                                    <li>
-                                        <span class="property-specs">SQ FT</span>
-                                        <span class="property-specs-number">{{ property.property_sq_feet }}</span>
-                                    </li>
-                                    <li>
-                                        <span class="property-specs">Posted by :</span>
-                                        <span class="property-specs-number">{{ property.property_seller_name.username }}</span>
-                                    </li>
-                                </ul>
-                            </div>
+            <div class="row mb-4 justify-content-center">
+                {% if result %}
+                    <div class="col-md-20">
+                        <div class="site-section-title text-center">
+                            <h2>{{ result }}</h2>
+                            <p>{{ solution }}</p>
                         </div>
                     </div>
-                {% endfor %}
+                {% else %}
+                    {% for property in object_list %}
+                        <div class="col-md-12">
+                            <div class="property-entry horizontal d-lg-flex">
+                                <a href="{% url 'detailed_view_property' property.id %}"
+                                   class="property-thumbnail h-100">
+                                    <div class="offer-type-wrap">
+                                        <span class="offer-type bg-success">Sale</span>
+                                    </div>
+                                    <img src="{{ property.property_image1.url }}" alt="Image" class="img-fluid">
+                                </a>
+                                <div class="p-4 property-body">
+                                    <h2 class="property-title"><a
+                                            href="{% url 'detailed_view_property' property.id %}">{{ property.property_title }}</a>
+                                    </h2>
+                                    <span class="property-location d-block mb-3"><span
+                                            class="property-icon icon-room"></span>{{ property.property_city }}, {{ property.property_state }}</span>
+                                    <strong class="property-price text-primary mb-3 d-block text-success">₹{{ property.property_price | currency_in_indian_format }}</strong>
+                                    <p>{{ property.property_description }}
+                                    <ul class="property-specs-wrap mb-3 mb-lg-0">
+                                        <li>
+                                            <span class="property-specs">Beds</span>
+                                            <span class="property-specs-number">{{ property.property_bedroom }}</span>
+                                        </li>
+                                        <li>
+                                            <span class="property-specs">SQ FT</span>
+                                            <span class="property-specs-number">{{ property.property_sq_feet }}</span>
+                                        </li>
+                                        <li>
+                                            <span class="property-specs">Posted by :</span>
+                                            <span class="property-specs-number">{{ property.property_seller_name.username }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
 
             {% if is_paginated %}

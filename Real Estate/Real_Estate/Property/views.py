@@ -75,14 +75,12 @@ class ViewAllProperty(ListView):
 class MyPropertyList(ListView):
     model = Properties
     template_name = 'my_property_list.html'
-    paginate_by = 2
+    context_object_name = "properties"
+    paginate_by = 3
 
-    def get_context_data(self, **kwargs):
-        context = super(MyPropertyList, self).get_context_data(**kwargs)
-        properties = Properties.objects.filter(property_seller_name_id=self.request.user.id).order_by(
+    def get_queryset(self):
+        return Properties.objects.filter(property_seller_name_id=self.request.user.id).order_by(
             '-property_listing_date')
-        context['properties'] = properties
-        return context
 
 
 class ViewSpecificProperty(DetailView):
@@ -163,22 +161,30 @@ def home(request):
     data = dict()
     if request.method == 'POST':
         invalid_entries = [' ', '', ""]
-        if request.POST.get('select-city') is None or 'All Cities':
+        if request.POST.get('select-city') == 'All Cities':
             city_search_results = Properties.objects.all()
         else:
-            city_search_results = Properties.objects.filter(property_city=request.POST.get('select_city', ""))
-        if request.POST.get('select-state') is None or 'All States':
+            city_search_results = Properties.objects.filter(property_city=request.POST.get('select-city'))
+        if request.POST.get('select-state') == 'All States':
             state_search_results = Properties.objects.all()
         else:
-            state_search_results = Properties.objects.filter(property_states=request.POST.get('select_state', ""))
+            state_search_results = Properties.objects.filter(property_state=request.POST.get('select-state'))
         query_result = city_search_results
         query_result = query_result.union(state_search_results)
+        text_search_results = []
         if request.POST.get('property-name') not in invalid_entries:
-            print('here')
             text_search_results = Properties.objects.filter(
                 property_title__icontains=request.POST.get('property-name'))
+        else:
+            text_search_results = Properties.objects.all()
+        if text_search_results:
             query_result = query_result.intersection(text_search_results)
-        data['object_list'] = query_result
+        if query_result:
+            data['object_list'] = query_result
+        else:
+            data['object_list'] = query_result
+            data['result'] = 'No results found'
+            data['solution'] = 'Try searching without a property name instead.'
         data['search'] = 'Search Results'
         return render(request, 'property_list.html', data)
     else:
