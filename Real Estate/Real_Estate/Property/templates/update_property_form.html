@@ -17,6 +17,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 col-lg-8 mb-5">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     <form method="POST" class="p-5 bg-white border" enctype="multipart/form-data">
                         {% csrf_token %}
                         <fieldset class="form-group">

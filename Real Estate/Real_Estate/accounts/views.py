@@ -17,7 +17,8 @@ def registerUser(request):
             user = user_form.save()
             profile_form_user = profile_form.save(commit=False)
             profile_form_user.user = user
-            profile_form.instance.image = request.FILES['image']
+            if len(request.FILES):
+                profile_form.instance.image = request.FILES['image']
             profile_form_user.save()
             name = user_form.cleaned_data.get('first_name')
             messages.success(request, f"Hey {name}! Your account has been created. You can now login!")

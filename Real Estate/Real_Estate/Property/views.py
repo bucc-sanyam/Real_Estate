@@ -33,6 +33,7 @@ class RegisterProperty(LoginRequiredMixin, FormView):
         return redirect('list_all_property')
 
     def form_invalid(self, form):
+        messages.add_message(self.request, messages.INFO, 'Please check all the fields and enter a valid input.')
         return render(self.request, template_name='register_property.html', context={'form': form})
 
 
@@ -149,6 +150,7 @@ def handlequery(request, id):
     send_mail(
         'Enquiry for ' + name.property_title,
         'Enquiry by : ' + request.user.first_name + ' ' + request.user.last_name +
+        '\nContact : ' + str(request.user.profile.phone_number) +
         '\nEnquiry : ' + description,
         request.user.email,
         [name.property_seller_name.email],

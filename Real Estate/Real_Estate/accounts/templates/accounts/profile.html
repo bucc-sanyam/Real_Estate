@@ -18,6 +18,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     <img src="{{ user.profile.image.url }}" alt="Image" class="img-fluid">
                 </div>
                 <div class="col-md-5 ml-auto" data-aos="fade-up" data-aos-delay="200">
@@ -38,21 +46,16 @@
                         </button>
                     </form>
                     <br>
+                    {% if user.profile.is_seller %}
                     <form action="{% url 'register_property' %}">
                         {% csrf_token %}
                         <button class="btn btn-outline-dark rounded-0 py-2 px-5" type="submit">Register Property
                         </button>
                     </form>
+                    {% endif %}
                     </p>
                 </div>
             </div>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ messages.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
         </div>
         <div class="site-section bg-light">
             <div class="container">
